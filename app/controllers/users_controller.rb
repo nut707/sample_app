@@ -2,6 +2,12 @@ class UsersController < ApplicationController
   before_action :signed_in_user, only: [:index,:edit,:update,:destroy]
   before_action :correct_user,   only: [:edit, :update]
   before_action :admin_user, only: :destroy
+  #before_filter :signed_in_user_filter, only: [:new,:create]
+
+  #def signed_in_user_filter
+   # redirect_to root_path, notice: 'Already logged in' if signed_in?
+  #end
+
   def index
     @users=User.order(:id).paginate(page: params[:page])
   end
@@ -11,10 +17,18 @@ class UsersController < ApplicationController
   end
   
   def new
+    if signed_in?
+      redirect_to root_path
+      flash[:notice] = 'Already logged in'
+    end
   	@user=User.new
   end
 
   def create
+    if signed_in?
+      redirect_to root_path
+      flash[:notice] = 'Already logged in'
+    end
   	@user = User.new(user_params)
   	if @user.save
       sign_in @user

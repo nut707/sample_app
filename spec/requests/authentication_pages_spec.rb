@@ -18,6 +18,10 @@ describe "AuthenticationPages" do
 
       it { should have_title('Sign in') }
       it { should have_selector('div.alert.alert-error') }
+      it { should_not have_link('Users') }
+      it { should_not have_link('Profile') }
+      it { should_not have_link('Settings') }
+      it { should_not have_link('Sign out') }
 
       describe "after visiting another page" do
         before { click_link "Home" }
@@ -111,6 +115,8 @@ describe "AuthenticationPages" do
         specify { expect(response).to redirect_to(root_url) }
       end
     end
+
+    
   end
 
 end
